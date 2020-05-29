@@ -16,7 +16,7 @@
                 <h3 class="mb-4 font-weight-bold">{{$name}}</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3 d-none d-md-block">
-                        <img src="{{asset('images/banner_share.jpg')}}" class="img-fluid" alt=""></div>
+                        <img src="{{asset('images/banner.jpg')}}" class="img-fluid" alt=""></div>
                     <div class="col-md-6">
                         <p>Cước phí: <span class="text-orange font-weight-bold">{{$pack->cost}}</span></p>
                         <p></p>
