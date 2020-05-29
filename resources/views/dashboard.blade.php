@@ -2,7 +2,7 @@
 @section('content')
     @if(request()->is('/'))<img src="{{asset('images/banner.jpg')}}" alt="Viettel 4G Siêu tốc"
                                 class="img-fluid w-100">@endif
-    <div class="container my-4 pt-4">
+    <div class="container my-4">
         @if(request()->filled('name'))
             <h3 class="mb-4">Kết quả tìm kiếm cho "{{request()->name}}"</h3>
             @if(empty($packages->get(0)))
@@ -37,7 +37,17 @@
                 </a>
             @endif
         @endif
-
+        <form method="post" accept-charset="utf-8" class="navform m-0 d-md-none mb-2" action="{{route('package.search')}}">
+            {{ csrf_field() }}
+            <div class="input-group text">
+                <input value="{{request()->name?? null}}" type="text" name="name" class="form-control"
+                       placeholder="Tìm gói cước" id="keyword">
+                <div class="input-group-append">
+                    <button class="input-group-text" id="basic-addon2"><i class="fas fa-search"
+                                                                          aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
         @if(!isset($category) && !request()->filled('name'))
             <h2 class="text-center font-weight-bold">Các gói cước nổi bật được nhiều người đăng ký</h2>
         @endif

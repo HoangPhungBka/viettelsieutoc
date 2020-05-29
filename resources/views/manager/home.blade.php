@@ -1,7 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container pt-1">
+        <form method="post" accept-charset="utf-8" class="navform m-0 d-md-none" action="{{route('package.search')}}">
+            {{ csrf_field() }}
+            <div class="input-group text">
+                <input value="{{request()->name?? null}}" type="text" name="name" class="form-control"
+                       placeholder="Tìm gói cước" id="keyword">
+                <div class="input-group-append">
+                    <button class="input-group-text" id="basic-addon2"><i class="fas fa-search"
+                                                                          aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
         <a href="{{route('home.create')}}" class="btn btn-success btn-action mt-2">Thêm Mới</a>
         <button class="btn btn-primary btn-action mt-2" data-toggle="modal" data-target="#number">Sửa số</button>
         <table class="table table-hover border">
