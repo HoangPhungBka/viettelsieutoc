@@ -152,21 +152,21 @@
                 yêu
                 cầu (điều kiện là trong tài khoản của quý khách có số tiền lớn hơn hoặc bằng giá trị của gói muốn
                 đăng
-                ký), hoặc quý khách vào mục tin nhắn soạn cú pháp: <strong>Tên gói cước 359030028</strong> gửi
-                <strong>9123</strong>
+                ký), hoặc quý khách vào mục tin nhắn soạn cú pháp: <strong>Tên gói cước {{$user->cellphone}}</strong> gửi
+                <strong>{{$user->telephone}}</strong>
             </p>
 
-            <p>Ví dụ: <strong>V120 359030028</strong> GỬI <strong>9123</strong></p>
+            <p>Ví dụ: <strong>V120 {{$user->cellphone}}</strong> GỬI <strong>{{$user->telephone}}</strong></p>
 
             <p><b><em>Trong đó:</em></b><br>
 
                 * Tên gói cước: Là tên gói cước mà quý khách muốn đăng ký (V120)<br>
 
-                * 359030028: Là mã kích hoạt khuyến mại của Viettel<br>
+                * {{$user->cellphone}}: Là mã kích hoạt khuyến mại của Viettel<br>
 
-                * 9123: Là tổng đài đăng ký các dịch vụ trọn gói của Viettel</p>
+                * {{$user->telephone}}: Là tổng đài đăng ký các dịch vụ trọn gói của Viettel</p>
 
-            <p>Lưu ý: Tin nhắn đến 9123 là miễn phí. Hệ thống chỉ tính tiền gói cước đăng ký, tài khoản chính phải
+            <p>Lưu ý: Tin nhắn đến {{$user->telephone}} là miễn phí. Hệ thống chỉ tính tiền gói cước đăng ký, tài khoản chính phải
                 bằng
                 hoặc lớn hơn gói cước cần đăng ký, nếu đăng ký không thành công sẽ không bị trừ tiền.</p>
 
