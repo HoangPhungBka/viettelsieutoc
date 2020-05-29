@@ -66,7 +66,7 @@
                         <a href="{{route('category', ['category'=>'goi-dang-ky-6-thang-1-nam'])}}" class="nav-link">GÓI ĐĂNG KÝ 6 THÁNG 1 NĂM</a>
                     </li>
                 </ul>
-                <form method="post" accept-charset="utf-8" class="navform m-0 d-none d-md-block" action="{{route('package.search')}}">
+                <form method="post" accept-charset="utf-8" class="navform m-0 {{!auth()->check()? 'd-none d-md-block' : ''}}" action="{{route('package.search')}}">
                     {{ csrf_field() }}
                     <div class="input-group text">
                         <input value="{{request()->name?? null}}" type="text" name="name" class="form-control"
