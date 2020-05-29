@@ -71,7 +71,7 @@
                                 <div class="d-none d-sm-block">
                                     <button type="button" class="btn btn-warning btn-register text-white"
                                             data-toggle="modal"
-                                            data-target="#{{$item->name}}">Đăng ký <i class="fas fa-paper-plane"></i>
+                                            data-target="#package_{{$item->name}}">Đăng ký <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </div>
 
@@ -83,7 +83,7 @@
                             </div>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn rounded-0 py-3 btn-info text-white" data-toggle="modal"
-                                        data-target="#{{$item->name}}"><i class="fas fa-eye"></i> Xem
+                                        data-target="#package_{{$item->name}}"><i class="fas fa-eye"></i> Xem
                                 </button>
                                 <a href="{{route('package.show', ['package' => strtolower($item->name)])}}"
                                    type="button" class="btn rounded-0 py-3 btn-success">
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     {{--            modal --}}
-                    <div class="modal fade" id="{{$item->name}}" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="package_{{$item->name}}" tabindex="-1" role="dialog"
                          aria-labelledby="ModalLabel">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
