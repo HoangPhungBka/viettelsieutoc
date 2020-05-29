@@ -60,11 +60,10 @@
                    value="{{isset($pack)? $pack->description : ''}}">
 
             <div class="d-flex justify-content-end mt-4">
-                <button id="submit" type="submit" class="btn btn-primary btn-action">Xác nhận</button>
                 @if(isset($pack))
-                    <a href="{{route('home.destroy', ['id' => $pack->id])}}" type="button"
-                       class="btn btn-danger btn-action">Xóa</a>
+                    <a href="{{route('home.destroy', ['id' => $pack->id])}}" type="button" class="btn btn-danger btn-action mr-2">Xóa</a>
                 @endif
+                <button id="submit" type="submit" class="btn btn-primary btn-action">Xác nhận</button>
             </div>
         </form>
     </div>

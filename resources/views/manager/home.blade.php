@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <a href="{{route('home.create')}}" class="btn btn-success btn-action mt-2">Thêm Mới</a>
-        <button class="btn btn-primary btn-action mt-2" data-toggle="modal" data-target="#number">Sửa số</button>
+        <a href="{{route('home.create')}}" class="btn btn-success btn-action mt-2 mb-2">Thêm Mới</a>
+        <button class="btn btn-primary btn-action mt-2 mb-2" data-toggle="modal" data-target="#number">Sửa số</button>
         <table class="table table-hover border">
             <thead class="border">
             <tr>
