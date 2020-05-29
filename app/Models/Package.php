@@ -11,11 +11,11 @@ class Package extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'summary', 'type', 'category_id', 'description', 'cost'];
+    protected $fillable = ['name', 'summary', 'type', 'description', 'cost', 'count'];
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function getNameAttribute($value)

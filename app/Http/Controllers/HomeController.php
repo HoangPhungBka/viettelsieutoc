@@ -19,13 +19,13 @@ class HomeController extends Controller
      */
     public function index($category = null)
     {
-        $user = User::query()->first(['phone', 'number']);
+        $user = User::query()->first(['cellphone', 'telephone']);
         $view = (auth()->check()) ? 'manager.home' : 'dashboard';
         $categories = null;
 
         $query = Package::query();
         if ($category) {
-            $query->whereHas('category', function (Builder $builder) use ($category) {
+            $query->whereHas('categories', function (Builder $builder) use ($category) {
                 $builder->where('slug', $category);
             });
         }
@@ -35,13 +35,11 @@ class HomeController extends Controller
         }
 
         if (!$category && !\request()->has('name') && !auth()->check()) {
-            $query->orWhereHas('category', function (Builder $builder) use ($category) {
-                $builder->where('slug', 'goi-hot');
-            })->orWhere('type', '1');
+            $query->where('type', '1');
         }
 
         $packages = $query->get();
-        $category = (!empty($category) && !$packages->isEmpty()) ? $category = $packages->get(0)->category->name : null;
+        $category = (!empty($category) && !$packages->isEmpty()) ? Category::query()->where('slug', $category)->first(['name', 'description']) : null;
 
         if (auth()->check()) {
             $categories = Category::all();
@@ -58,9 +56,10 @@ class HomeController extends Controller
      */
     public function store(PackageRequest $request)
     {
-        Package::create(array_filter($request->validated()));
+        $package = Package::create($packageRequest = array_merge($request->validated(), ['count' => 0]));
+        $package->categories()->attach(collect($packageRequest['categories'])->keys()->all());
 
-        return redirect('home.index');
+        return redirect()->route('home.index');
     }
 
     /**
@@ -73,20 +72,24 @@ class HomeController extends Controller
     {
         $categories = null;
         $view = 'dashboard';
-        $user = User::query()->first(['phone', 'number']);
-        $pack = Package::with('category')->where('name', $name)->first();
+        $user = User::query()->first(['cellphone', 'telephone']);
+        $pack = Package::with('categories')->where('name', $name)->first();
 
         if (auth()->check()) {
             $view = 'manager.package';
             $categories = Category::all();
+
+            $currentCategories = $pack->categories->mapWithKeys(function ($item) {
+                return [$item['id'] => 'checked'];
+            });
         } else {
             if ($pack) {
                 $pack->increment('count');
             }
-            $packages = Package::all();
+            $packages = Package::query()->where('type', 1)->get();
         }
 
-        return view($view, compact('user', 'pack', 'package', 'packages', 'categories'));
+        return view($view, compact('user', 'pack', 'name', 'packages', 'categories', 'currentCategories'));
     }
 
     /**
@@ -98,11 +101,15 @@ class HomeController extends Controller
      */
     public function update(PackageRequest $request)
     {
-        $attributes = array_filter($request->validated());
+        $attributes = $request->validated();
 
-        Package::query()->findOrFail($request->id)->update($attributes);
+        $package = Package::query()->findOrFail($request->id);
+        $package->update($attributes);
 
-        return redirect('home.index');
+        $categories = collect($attributes['categories']);
+        $package->categories()->sync($categories->keys()->all());
+
+        return redirect()->route('home.index');
     }
 
     /**
@@ -115,7 +122,7 @@ class HomeController extends Controller
     {
         Package::destroy($id);
 
-        return redirect('home.index');
+        return redirect()->route('home.index');
     }
 
     /**
@@ -126,7 +133,7 @@ class HomeController extends Controller
     {
         auth()->user()->update($request->validated());
 
-        return redirect('home.index');
+        return redirect()->route('home.index');
     }
 
     public function create()

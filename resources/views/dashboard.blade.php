@@ -9,11 +9,11 @@
                 <h4 class="text-center py-5 text-danger">Không tìm thấy nội dung phù hợp!</h4>
             @endif
         @elseif(isset($category))
-            <h3 class="mb-4 font-weight-bold">{{$category}}</h3>
-        @elseif(isset($package))
+            <h3 class="mb-4 font-weight-bold">{{$category->name}}</h3>
+            <h4 class="mb-3">{!! $category->description !!}</h4>
+        @elseif(isset($name))
             @if(isset($pack))
-                <h3 class="mb-4 font-weight-bold">{{$package}}</h3>
-                <h4 class="mb-3">{!! $pack->category->description !!}</h4>
+                <h3 class="mb-4 font-weight-bold">{{$name}}</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3 d-none d-md-block">
                         <img src="{{asset('images/banner_share.jpg')}}" class="img-fluid" alt=""></div>
@@ -25,11 +25,16 @@
                         <div>
                             <p>Đăng ký bằng cách gửi tin nhắn SMS theo cú pháp:</p>
                             <p class="text-center"><span
-                                    class="text-orange font-weight-bold">{{$pack->name}} {{$user->phone}}</span> gửi
-                                <span class="text-orange font-weight-bold">{{$user->number}}</span></p>
+                                        class="text-orange font-weight-bold">{{$pack->name}} {{$user->cellphone}}</span>
+                                gửi
+                                <span class="text-orange font-weight-bold">{{$user->telephone}}</span></p>
                         </div>
                     </div>
                 </div>
+                <p class="text-center text-danger font-weight-bold d-md-none">Hoặc nhấn ngày nút đăng ký dưới đây</p>
+                <a href="sms:{{$user->telephone}}?&body={{$pack->name}} {{$user->cellphone}}" class="btn btn-warning btn-block d-md-none text-white mb-2" title="{{$pack->name}}">
+                    Đăng ký <i class="fas fa-paper-plane"></i>
+                </a>
             @endif
         @endif
 
@@ -59,9 +64,9 @@
                             <div class="price text-center font-weight-bold p-2">{{$item->cost}}</div>
                             <div class="text-center m-3">
                                 <p><span
-                                        class="font-weight-bold color-viettel">{!! $item->name !!} {{$user->phone}}</span>
+                                            class="font-weight-bold color-viettel">{!! $item->name !!} {{$user->cellphone}}</span>
                                     gửi
-                                    <span class="font-weight-bold color-viettel">{{$user->number}}</span>
+                                    <span class="font-weight-bold color-viettel">{{$user->telephone}}</span>
                                 </p>
                                 <div class="d-none d-sm-block">
                                     <button type="button" class="btn btn-warning btn-register text-white"
@@ -70,7 +75,8 @@
                                     </button>
                                 </div>
 
-                                <a href="sms:{{$user->number}}?&body={{$item->name}} {{$user->phone}}" type="button"
+                                <a href="sms:{{$user->telephone}}?&body={{$item->name}} {{$user->cellphone}}"
+                                   type="button"
                                    class="btn btn-warning btn-register text-white d-sm-none">
                                     Đăng ký <i class="fas fa-paper-plane"></i>
                                 </a>
@@ -106,12 +112,15 @@
                                         <p>Đăng ký bằng cách gửi tin nhắn SMS theo cú pháp:</p>
                                         <p class="text-center">
                                             <span
-                                                class="text-orange font-weight-bold">{{$item->name}} {{$user->phone}}</span>
+                                                    class="text-orange font-weight-bold">{{$item->name}} {{$user->cellphone}}</span>
                                             gửi
-                                            <span class="text-orange font-weight-bold">{{$user->number}}</span></p>
+                                            <span class="text-orange font-weight-bold">{{$user->telephone}}</span></p>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <a href="sms:{{$user->telephone}}?&body={{$item->name}} {{$user->cellphone}}" class="btn btn-warning d-md-none text-white" title="{{$item->name}}">
+                                        Đăng ký <i class="fas fa-paper-plane"></i>
+                                    </a>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                                 </div>
                             </div>

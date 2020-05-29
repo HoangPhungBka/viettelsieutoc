@@ -4,15 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <meta property="og:image" content="{{ asset('images/logo.png') }}">
-    <meta property="og:title" content="LÀM THẾ NÀO ĐỂ ĐĂNG KÝ ĐƯỢC GÓI DATA MỚI NHẤT CỦA VIETTEL. Đây là kênh đăng ký trọn gói VIETTEL thông dụng nhất qua tin nhắn.">
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Viettel4GSieuToc') }}</title>
+    <meta name="description" content="Hướng dẫn đăng ký dịch vụ Data 4G, dịch vụ Data 3G mạng Viettel, tổng đài đăng ký 9123 chính thức từ nhà mạng.">
+    <meta itemprop="name" content="Website đăng ký 4G siêu tốc chính Thức của Viettel">
+    <meta itemprop="description" content="Hướng dẫn đăng ký dịch vụ Data 4G, dịch vụ Data 3G mạng Viettel, tổng đài đăng ký 9123 chính thức từ nhà mạng.">
+    <meta itemprop="url" content="{{route('dashboard')}}">
+    <meta itemprop="image" content="{{asset('images/banner.jpg')}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{asset('images/banner.jpg')}}">
+    <meta name="twitter:title" content="Viettel 3G, 4G, 5G  Siêu tốc">
+    <meta name="twitter:description" content="Hướng dẫn đăng ký dịch vụ Data 4G, dịch vụ Data 3G mạng Viettel, tổng đài đăng ký 9123 chính thức từ nhà mạng.">
+    <meta property="og:url" content="{{route('dashboard')}}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Website đăng ký 4G siêu tốc chính Thức của Viettel">
+    <meta property="og:title" content="Viettel 4G Siêu tốc">
+    <meta property="og:description" content="Hướng dẫn đăng ký dịch vụ Data 4G, dịch vụ Data 3G mạng Viettel, tổng đài đăng ký 9123 chính thức từ nhà mạng.">
+    <meta property="og:image" content="{{asset('images/banner.jpg')}}">
+    <meta property="og:image:alt" content="Đăng ký 4G siêu tốc Viettel">
+    <meta property="fb:app_id" content="">
 
+    <link rel="shortcut icon" href="{{asset('favicon.ico')}}" type="image/x-icon">
+    <link rel="icon" href="{{asset('favicon.ico')}}" type="image/x-icon">
+    <link rel="canonical" href="{{route('dashboard')}}">
+
+    <title>{{ config('app.name', 'Viettel4GSieuToc') }}</title>
+    @auth()
+        <script src="https://cdn.ckeditor.com/ckeditor5/19.0.0/decoupled-document/ckeditor.js"></script>
+    @endauth
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/web.css') }}" type="text/css">
+    <script src="https://kit.fontawesome.com/52f13975c5.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -29,23 +51,23 @@
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <a href="{{route('category', ['category' => '4g-tron-goi'])}}" class="nav-link">4G trọn gói</a>
+                        <a href="{{route('category', ['category' => 'goi-combo-4G-phut-goi'])}}" class="nav-link">COMBO 4G + PHÚT GỌI</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('category', ['category'=>'goi-dcom'])}}" class="nav-link">Gói DCOM</a></li>
+                        <a href="{{route('category', ['category'=>'goi-phut-goi'])}}" class="nav-link">GÓI PHÚT GỌI</a></li>
                     <li class="nav-item">
-                        <a href="{{route('category', ['category'=>'goi-combo'])}}" class="nav-link">Gói COMBO</a></li>
+                        <a href="{{route('category', ['category'=>'goi-4g-30-ngay'])}}" class="nav-link">GÓI 4G 30 NGÀY</a></li>
                     <li class="nav-item">
-                        <a href="{{route('category', ['category'=>'goi-theo-ngay'])}}" class="nav-link">Gói theo
-                            ngày</a></li>
+                        <a href="{{route('category', ['category'=>'goi-dcom'])}}" class="nav-link">GÓI DCOM</a></li>
                     <li class="nav-item">
-                        <a href="{{route('category', ['category'=>'goi-phut-goi'])}}" class="nav-link">Gói phút gọi</a>
+                        <a href="{{route('category', ['category'=>'goi-theo-ngay-tuan'])}}" class="nav-link">GÓI THEO NGÀY/TUẦN</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('category', ['category'=>'goi-hot'])}}" class="nav-link">Gói HOT</a></li>
+                        <a href="{{route('category', ['category'=>'goi-dang-ky-6-thang-1-nam'])}}" class="nav-link">GÓI ĐĂNG KÝ 6 THÁNG 1 NĂM</a>
+                    </li>
                 </ul>
                 <form method="post" accept-charset="utf-8" class="navform m-0" action="{{route('package.search')}}">
-                    @csrf
+                    {{ csrf_field() }}
                     <div class="input-group text">
                         <input value="{{request()->name?? null}}" type="text" name="name" class="form-control"
                                placeholder="Tìm gói cước" id="keyword">
@@ -57,13 +79,21 @@
                 </form>
 
                 @auth()
-                    <form method="post" accept-charset="utf-8" class="my-2 ml-md-1" action="{{route('logout')}}">
-                        @csrf
+                    <form method="post" accept-charset="utf-8" class="my-2 ml-md-1 d-block d-md-none"
+                          action="{{route('logout')}}">
+                        {{ csrf_field() }}
                         <button class="btn btn-success">Đăng Xuất</button>
                     </form>
                 @endauth
             </div>
         </div>
+        @auth()
+            <form method="post" accept-charset="utf-8" class="my-2 ml-md-1 d-none d-md-block"
+                  action="{{route('logout')}}">
+                {{ csrf_field() }}
+                <button class="btn btn-success">Đăng Xuất</button>
+            </form>
+        @endauth
     </nav>
 @endif
 
@@ -84,7 +114,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/19.0.0/decoupled-document/ckeditor.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 </body>

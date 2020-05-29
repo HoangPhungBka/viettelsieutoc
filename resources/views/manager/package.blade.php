@@ -5,7 +5,7 @@
             <h5 class="modal-title font-weight-bold" id="ModalLabel">{{isset($pack)? $pack->name : 'Tạo mới'}}</h5>
         </div>
         <form method="POST" action="{{isset($pack)? route('home.update') : route('home.store')}}">
-            @csrf
+            {{ csrf_field() }}
             @if(isset($pack))
                 <input name="id" type="hidden" value="{{$pack->id}}">
             @endif
@@ -21,21 +21,20 @@
             </div>
             <div class="form-group">
                 <label class="font-weight-bold">Loại</label>
-                <select class="custom-select" name="category_id">
-                    @foreach($categories as $category)
-                        <option
-                            {{ isset($pack) && $pack->category_id === $category->id ? 'selected' : '' }} value="{{$category->id}}">
-                            {{$category->name}}
-                        </option>
-                    @endforeach
-                </select>
+                @foreach($categories as $category)
+                    <div class="custom-control custom-checkbox">
+                        <input name="categories[{{$category->id}}]" type="checkbox" class="custom-control-input"
+                               id="{{$category->id}}" {{isset($currentCategories)? $currentCategories->get($category->id)?? '' : ''}}>
+                        <label class="custom-control-label" for="{{$category->id}}">{{$category->name}}</label>
+                    </div>
+                @endforeach
             </div>
 
             <div class="form-group">
                 <label class="font-weight-bold">Kiểu</label>
                 <select class="custom-select" name="type">
                     <option value="1">HOT</option>
-                    <option {{isset($pack) && ($pack->type === 2)? 'selected' : ''}} value="2">
+                    <option {{isset($pack) && ($pack->type === 0)? 'selected' : ''}} value="0">
                         Bình thường
                     </option>
                 </select>
@@ -48,7 +47,7 @@
                     {!! isset($pack)? $pack->summary : ''!!}
                 </div>
             </div>
-            <input id="textarea-summary" name="summary" type="hidden">
+            <input id="textarea-summary" name="summary" type="hidden" value="{{isset($pack)? $pack->summary : ''}}">
 
             <div class="form-group border">
                 <label class="font-weight-bold" for="description">Miêu tả</label>
@@ -57,7 +56,8 @@
                     {!!isset($pack)? $pack->description : ''!!}
                 </div>
             </div>
-            <input id="textarea-description" name="description" type="hidden">
+            <input id="textarea-description" name="description" type="hidden"
+                   value="{{isset($pack)? $pack->description : ''}}">
 
             <div class="d-flex justify-content-end mt-4">
                 <button id="submit" type="submit" class="btn btn-primary btn-action">Xác nhận</button>

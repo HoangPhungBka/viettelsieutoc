@@ -23,13 +23,19 @@ class PackageRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'bail|required|unique:packages,name',
-            'category_id' => 'required',
+            'categories' => 'required',
             'type' => 'bail|required|boolean',
             'cost' => 'required',
             'summary' => 'required',
             'description' => 'required'
         ];
+
+        if ($this->has('id')) {
+            $rules['name'] = $rules['name'] . ",$this->id";
+        }
+
+        return $rules;
     }
 }
