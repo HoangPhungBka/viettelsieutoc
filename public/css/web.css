@@ -1,4 +1,5 @@
-/*css app*/
+@import url("https://fonts.googleapis.com/css?family=Dancing+Script");
+
 .logo {
     height: 40px;
 }
@@ -58,4 +59,19 @@ footer {
 }
 .navbar-nav {
     font-size: 14px;
+}
+
+.click-me {
+    color: red;
+    animation-name: click-me;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    font-family: 'Dancing Script', serif;
+}
+
+@keyframes click-me {
+    0%   {color: red;}
+    25%  {color: yellow;}
+    50%  {color: blue;}
+    100% {color: green;}
 }
