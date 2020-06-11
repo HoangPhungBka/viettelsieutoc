@@ -160,13 +160,13 @@
 
             <p><b><em>Trong đó:</em></b><br>
 
-                * Tên gói cước: Là tên gói cước mà quý khách muốn đăng ký (V120)<br>
+                * Tên gói cước: Là tên gói cước mà quý khách muốn đăng ký <strong>(V120)</strong><br>
 
-                * {{$user->cellphone}}: Là mã kích hoạt khuyến mại của Viettel<br>
+                * <strong>{{$user->cellphone}}</strong>: Là mã kích hoạt khuyến mại của Viettel<br>
 
-                * {{$user->telephone}}: Là tổng đài đăng ký các dịch vụ trọn gói của Viettel</p>
+                * <strong>{{$user->telephone}}</strong>: Là tổng đài đăng ký các dịch vụ trọn gói của Viettel</p>
 
-            <p>Lưu ý: Tin nhắn đến {{$user->telephone}} là miễn phí. Hệ thống chỉ tính tiền gói cước đăng ký, tài khoản chính phải
+            <p>Lưu ý: Tin nhắn đến <strong>{{$user->telephone}}</strong> là miễn phí. Hệ thống chỉ tính tiền gói cước đăng ký, tài khoản chính phải
                 bằng
                 hoặc lớn hơn gói cước cần đăng ký, nếu đăng ký không thành công sẽ không bị trừ tiền.</p>
 
