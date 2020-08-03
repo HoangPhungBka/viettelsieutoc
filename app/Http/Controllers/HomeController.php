@@ -66,30 +66,29 @@ class HomeController extends Controller
      * Display the specified resource.
      *
      * @param string $name
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show($name)
     {
-        $categories = null;
-        $view = 'dashboard';
         $user = User::query()->first(['cellphone', 'telephone']);
         $pack = Package::with('categories')->where('name', $name)->first();
 
         if (auth()->check()) {
-            $view = 'manager.package';
             $categories = Category::all();
 
             $currentCategories = $pack->categories->mapWithKeys(function ($item) {
                 return [$item['id'] => 'checked'];
             });
+
+            return view('manager.package', compact('user', 'pack', 'name', 'categories', 'currentCategories'));
         } else {
             if ($pack) {
                 $pack->increment('count');
             }
             $packages = Package::query()->where('type', 1)->get();
-        }
 
-        return view($view, compact('user', 'pack', 'name', 'packages', 'categories', 'currentCategories'));
+            return view('dashboard', compact('user', 'pack', 'name', 'packages'));
+        }
     }
 
     /**
