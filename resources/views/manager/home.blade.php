@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <a href="{{route('home.create')}}" class="btn btn-success btn-action mt-2">Thêm Mới</a>
-        <button class="btn btn-primary btn-action mt-2" data-toggle="modal" data-target="#number">Sửa số</button>
+        <a href="{{route('home.create')}}" class="btn btn-success btn-action mt-2 mb-2">Thêm Mới</a>
+        <button class="btn btn-primary btn-action mt-2 mb-2" data-toggle="modal" data-target="#number">Sửa số</button>
         <table class="table table-hover border">
             <thead class="border">
             <tr>
@@ -21,7 +21,11 @@
                     <tr>
                         <th scope="row">{{$pack->name}}</th>
                         <td>{{ $pack->cost }}</td>
-                        <td>{{$pack->category->name}}</td>
+                        <td>
+                                @foreach($pack->categories as $category)
+                                    <span class="badge badge-success">{{$category->name}}</span>
+                                @endforeach
+                        </td>
                         <td>{!! ($pack->type === 1)? '<span class="badge badge-danger">HOT</span>' : '' !!}</td>
                         <td>{{$pack->count}}</td>
                         <td>
@@ -45,15 +49,17 @@
                             </button>
                         </div>
                         <form method="POST" action="{{route('profile')}}">
-                            @csrf
+                            {{ csrf_field() }}
                             <div class="form-group">
                                 <label class="font-weight-bold">Số điện thoại</label>
-                                <input value="{{$user->phone}}" required type="text" name="phone" class="form-control"
+                                <input value="{{$user->cellphone}}" required type="text" name="cellphone"
+                                       class="form-control"
                                        placeholder="Nhập số điện thoại">
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold">Số</label>
-                                <input value="{{$user->number}}" required type="text" name="number" class="form-control"
+                                <input value="{{$user->telephone}}" required type="text" name="telephone"
+                                       class="form-control"
                                        placeholder="Nhập số">
                             </div>
                             <button type="submit" class="btn btn-primary">Xác nhận</button>

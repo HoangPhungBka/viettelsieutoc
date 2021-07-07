@@ -2,21 +2,21 @@
 @section('content')
     @if(request()->is('/'))<img src="{{asset('images/banner.jpg')}}" alt="Viettel 4G Siêu tốc"
                                 class="img-fluid w-100">@endif
-    <div class="container my-4 pt-4">
+    <div class="container my-4">
         @if(request()->filled('name'))
             <h3 class="mb-4">Kết quả tìm kiếm cho "{{request()->name}}"</h3>
             @if(empty($packages->get(0)))
                 <h4 class="text-center py-5 text-danger">Không tìm thấy nội dung phù hợp!</h4>
             @endif
         @elseif(isset($category))
-            <h3 class="mb-4 font-weight-bold">{{$category}}</h3>
-        @elseif(isset($package))
+            <h3 class="mb-4 font-weight-bold">{{$category->name}}</h3>
+            <h4 class="mb-3">{!! $category->description !!}</h4>
+        @elseif(isset($name))
             @if(isset($pack))
-                <h3 class="mb-4 font-weight-bold">{{$package}}</h3>
-                <h4 class="mb-3">{!! $pack->category->description !!}</h4>
+                <h3 class="mb-4 font-weight-bold">{{$name}}</h3>
                 <div class="row">
                     <div class="col-md-6 mb-3 d-none d-md-block">
-                        <img src="{{asset('images/banner_share.jpg')}}" class="img-fluid" alt=""></div>
+                        <img src="{{asset('images/banner.jpg')}}" class="img-fluid" alt=""></div>
                     <div class="col-md-6">
                         <p>Cước phí: <span class="text-orange font-weight-bold">{{$pack->cost}}</span></p>
                         <p></p>
@@ -25,14 +25,29 @@
                         <div>
                             <p>Đăng ký bằng cách gửi tin nhắn SMS theo cú pháp:</p>
                             <p class="text-center"><span
-                                    class="text-orange font-weight-bold">{{$pack->name}} {{$user->phone}}</span> gửi
-                                <span class="text-orange font-weight-bold">{{$user->number}}</span></p>
+                                        class="text-orange font-weight-bold">{{$pack->name}} {{$user->cellphone}}</span>
+                                gửi
+                                <span class="text-orange font-weight-bold">{{$user->telephone}}</span></p>
                         </div>
                     </div>
                 </div>
+                <p class="text-center text-danger font-weight-bold d-md-none">Hoặc nhấn ngày nút đăng ký dưới đây</p>
+                <a href="sms:{{$user->telephone}}?&body={{$pack->name}} {{$user->cellphone}}" class="btn btn-warning btn-block d-md-none text-white mb-2" title="{{$pack->name}}">
+                    Đăng ký <i class="fas fa-paper-plane"></i>
+                </a>
             @endif
         @endif
-
+        <form method="post" accept-charset="utf-8" class="navform m-0 d-md-none mb-2" action="{{route('package.search')}}">
+            {{ csrf_field() }}
+            <div class="input-group text">
+                <input value="{{request()->name?? null}}" type="text" name="name" class="form-control"
+                       placeholder="Tìm gói cước" id="keyword">
+                <div class="input-group-append">
+                    <button class="input-group-text" id="basic-addon2"><i class="fas fa-search"
+                                                                          aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </form>
         @if(!isset($category) && !request()->filled('name'))
             <h2 class="text-center font-weight-bold">Các gói cước nổi bật được nhiều người đăng ký</h2>
         @endif
@@ -59,25 +74,26 @@
                             <div class="price text-center font-weight-bold p-2">{{$item->cost}}</div>
                             <div class="text-center m-3">
                                 <p><span
-                                        class="font-weight-bold color-viettel">{!! $item->name !!} {{$user->phone}}</span>
+                                            class="font-weight-bold color-viettel">{!! $item->name !!} {{$user->cellphone}}</span>
                                     gửi
-                                    <span class="font-weight-bold color-viettel">{{$user->number}}</span>
+                                    <span class="font-weight-bold color-viettel">{{$user->telephone}}</span>
                                 </p>
                                 <div class="d-none d-sm-block">
                                     <button type="button" class="btn btn-warning btn-register text-white"
                                             data-toggle="modal"
-                                            data-target="#{{$item->name}}">Đăng ký <i class="fas fa-paper-plane"></i>
+                                            data-target="#package_{{$item->name}}">Đăng ký <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </div>
 
-                                <a href="sms:{{$user->number}}?&body={{$item->name}} {{$user->phone}}" type="button"
+                                <a href="sms:{{$user->telephone}}?&body={{$item->name}} {{$user->cellphone}}"
+                                   type="button"
                                    class="btn btn-warning btn-register text-white d-sm-none">
                                     Đăng ký <i class="fas fa-paper-plane"></i>
                                 </a>
                             </div>
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn rounded-0 py-3 btn-info text-white" data-toggle="modal"
-                                        data-target="#{{$item->name}}"><i class="fas fa-eye"></i> Xem
+                                        data-target="#package_{{$item->name}}"><i class="fas fa-eye"></i> Xem
                                 </button>
                                 <a href="{{route('package.show', ['package' => strtolower($item->name)])}}"
                                    type="button" class="btn rounded-0 py-3 btn-success">
@@ -87,7 +103,7 @@
                         </div>
                     </div>
                     {{--            modal --}}
-                    <div class="modal fade" id="{{$item->name}}" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="package_{{$item->name}}" tabindex="-1" role="dialog"
                          aria-labelledby="ModalLabel">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -106,12 +122,15 @@
                                         <p>Đăng ký bằng cách gửi tin nhắn SMS theo cú pháp:</p>
                                         <p class="text-center">
                                             <span
-                                                class="text-orange font-weight-bold">{{$item->name}} {{$user->phone}}</span>
+                                                    class="text-orange font-weight-bold">{{$item->name}} {{$user->cellphone}}</span>
                                             gửi
-                                            <span class="text-orange font-weight-bold">{{$user->number}}</span></p>
+                                            <span class="text-orange font-weight-bold">{{$user->telephone}}</span></p>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <a href="sms:{{$user->telephone}}?&body={{$item->name}} {{$user->cellphone}}" class="btn btn-warning d-md-none text-white" title="{{$item->name}}">
+                                        Đăng ký <i class="fas fa-paper-plane"></i>
+                                    </a>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                                 </div>
                             </div>
@@ -133,21 +152,21 @@
                 yêu
                 cầu (điều kiện là trong tài khoản của quý khách có số tiền lớn hơn hoặc bằng giá trị của gói muốn
                 đăng
-                ký), hoặc quý khách vào mục tin nhắn soạn cú pháp: <strong>Tên gói cước 359030028</strong> gửi
-                <strong>9123</strong>
+                ký), hoặc quý khách vào mục tin nhắn soạn cú pháp: <strong>Tên gói cước {{$user->cellphone}}</strong> gửi
+                <strong>{{$user->telephone}}</strong>
             </p>
 
-            <p>Ví dụ: <strong>V120 359030028</strong> GỬI <strong>9123</strong></p>
+            <p>Ví dụ: <strong>V120 {{$user->cellphone}}</strong> GỬI <strong>{{$user->telephone}}</strong></p>
 
             <p><b><em>Trong đó:</em></b><br>
 
-                * Tên gói cước: Là tên gói cước mà quý khách muốn đăng ký (V120)<br>
+                * Tên gói cước: Là tên gói cước mà quý khách muốn đăng ký <strong>(V120)</strong><br>
 
-                * 359030028: Là mã kích hoạt khuyến mại của Viettel<br>
+                * <strong>{{$user->cellphone}}</strong>: Là mã kích hoạt khuyến mại của Viettel<br>
 
-                * 9123: Là tổng đài đăng ký các dịch vụ trọn gói của Viettel</p>
+                * <strong>{{$user->telephone}}</strong>: Là tổng đài đăng ký các dịch vụ trọn gói của Viettel</p>
 
-            <p>Lưu ý: Tin nhắn đến 9123 là miễn phí. Hệ thống chỉ tính tiền gói cước đăng ký, tài khoản chính phải
+            <p>Lưu ý: Tin nhắn đến <strong>{{$user->telephone}}</strong> là miễn phí. Hệ thống chỉ tính tiền gói cước đăng ký, tài khoản chính phải
                 bằng
                 hoặc lớn hơn gói cước cần đăng ký, nếu đăng ký không thành công sẽ không bị trừ tiền.</p>
 

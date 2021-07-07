@@ -21,7 +21,6 @@ class CreatePackagesTable extends Migration
             $table->string('cost');
             $table->text('description');
             $table->boolean('type');
-            $table->unsignedInteger('category_id');
             $table->unsignedInteger('count');
 
             $table->unique('name');
